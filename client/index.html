@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" sizes="16x16" href="./favicon.png" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+      integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <title>Musicaplly</title>
+    <script src="./app.js" defer></script>
+  </head>
+  <body>
+    <header>
+      <button class="btn library">
+        Ulubione <i class="fab fa-itunes-note"></i>
+      </button>
+      <button class="btn add">Dodaj <i class="fas fa-plus"></i></button>
+      <button class="btn view">Widok <i class="fas fa-photo-video"></i></button>
+    </header>
+    <div class="top-container visible">
+      <span>
+        Pomóż nam powiększać bibliotekę. Dodaj swoje ulubione piosenki
+      </span>
+      <button class="btn" id="accept">Dodaj</button>
+      <button class="btn" id="reject">Nie dziękuję</button>
+    </div>
+    <form enctype="multipart/form-data" class="upload-form">
+      <div class="close">&times;</div>
+      <div class="input-wrapper">
+        <small>Plik mp3*</small>
+        <label class="upload-file" id="audio-label">
+          <p>Załącz plik lub upuść tutaj</p>
+          <input type="file" accept=".mp3" id="audio-input" />
+        </label>
+      </div>
+      <div class="input-wrapper text-input">
+        <small>Artysta</small>
+        <input type="text" name="artist" id="artist" />
+      </div>
+      <div class="input-wrapper text-input">
+        <small>Tytuł</small>
+        <input type="text" name="title" id="title" />
+      </div>
+      <div class="input-wrapper">
+        <small>Okładka</small>
+        <label class="upload-file" id="image-label">
+          <p>Załącz plik lub upuść tutaj</p>
+          <input type="file" id="image-input" accept="image/*" />
+        </label>
+      </div>
+      <button class="btn" id="submit">Prześlij</button>
+    </form>
+    <div class="container">
+      <div class="library-container"></div>
+      <div class="tracks-container"></div>
+      <button class="btn" id="more">Więcej</button>
+    </div>
+    <div class="player none">
+      <div class="icon toggle">
+        <i class="fas fa-chevron-up"></i>
+        <i class="fas fa-chevron-down"></i>
+      </div>
+      <div class="cover">
+        <img />
+      </div>
+      <div class="track-info">
+        <h4>Artist</h4>
+        <p>Title</p>
+      </div>
+      <div class="track-time">
+        <p id="current-time">0:00</p>
+        <div class="track">
+          <input type="range" id="track-time-input" min="0" value="0" />
+          <div class="track-anim"></div>
+        </div>
+        <p id="end-time">0:00</p>
+      </div>
+      <div class="controls">
+        <div class="icon" id="step-backward">
+          <i class="fas fa-step-backward"></i>
+        </div>
+        <div class="icon" id="volume">
+          <input
+            type="range"
+            id="volume-input"
+            step="0.01"
+            min="0"
+            max="1"
+            value="1"
+          />
+          <i class="fas fa-volume-mute"></i>
+          <i class="fas fa-volume-up"></i>
+        </div>
+        <div class="icon play" id="play">
+          <i class="fas fa-pause"></i>
+          <i class="fas fa-play"></i>
+        </div>
+        <div class="icon" id="step-forward">
+          <i class="fas fa-step-forward"></i>
+        </div>
+        <div class="icon" id="repeat">
+          <i class="fas fa-undo"></i>
+        </div>
+      </div>
+    </div>
+    <audio></audio>
+    <div class="message"></div>
+  </body>
+</html>
