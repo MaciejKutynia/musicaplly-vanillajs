@@ -16,7 +16,15 @@
     <script src="./app.js" defer></script>
   </head>
   <body>
+    <div class="layer"></div>
+    <div class="loading visible"><img src="./loading.gif" /></div>
     <header>
+      <div class="search">
+        <form class="search-form">
+          <input type="search" id="search-bar" />
+          <button type="submit" class="btn" id="search">Szukaj</button>
+        </form>
+      </div>
       <button class="btn library">
         Ulubione <i class="fab fa-itunes-note"></i>
       </button>
@@ -48,10 +56,15 @@
         <input type="text" name="title" id="title" />
       </div>
       <div class="input-wrapper">
-        <small>Okładka</small>
+        <div>
+          <small>Okładka</small>
+          <small>Zaznacz aby podać link do obrazka</small>
+          <input type="checkbox" id="check" />
+        </div>
+        <input type="text" name="cover" id="cover" style="display: none" />
         <label class="upload-file" id="image-label">
           <p>Załącz plik lub upuść tutaj</p>
-          <input type="file" id="image-input" accept="image/*" />
+          <input type="file" accept="image/*" id="image-input" />
         </label>
       </div>
       <button class="btn" id="submit">Prześlij</button>
@@ -59,7 +72,7 @@
     <div class="container">
       <div class="library-container"></div>
       <div class="tracks-container"></div>
-      <button class="btn" id="more">Więcej</button>
+      <button class="btn" id="latest">Najnowsze</button>
     </div>
     <div class="player none">
       <div class="icon toggle">

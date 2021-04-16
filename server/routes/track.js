@@ -3,21 +3,14 @@ import Track from "../models/Track.js";
 
 const router = express.Router();
 
-router.post("/", async (req, res) => {
-  const { skip } = req.body;
+router.get("/latest", async (req, res) => {
   try {
-    const tracks = await Track.find()
-      .sort({ date: "desc" })
-      .limit(4)
-      .select("-src")
-      .skip(skip);
-    const allTracks = await Track.find().select("_id");
-    const trackLength = allTracks.length;
+    let tracks = await Track.find().select("-src").sort({ date: -1 });
+    tracks = tracks.slice(0, 30);
     const response = {
-      length: trackLength,
       tracks,
+      length: tracks.length,
     };
-
     res.json(response);
   } catch (error) {
     console.error(error.message);
@@ -62,17 +55,21 @@ router.post("/track", async (req, res) => {
   }
 });
 
-//TODO do usunięcia
-
-router.post("/rm", async (req, res) => {
-  try {
-    const { id } = req.body;
-    const toRemove = await Track.findOneAndRemove({ _id: id });
-  } catch (error) {
-    console.error(error.message);
-
-    res.status(500).json("Błąd serwera");
+router.get("/search/:query", async (req, res) => {
+  const query = req.params.query;
+  if (query !== "undefined") {
+    const result = await Track.find({
+      $or: [
+        { artist: { $regex: query, $options: "i" } },
+        { name: { $regex: query, $options: "i" } },
+      ],
+    })
+      .select("-src")
+      .select("-type");
+    res.json(result);
+    return;
   }
+  res.status(401).json("Tekst wyszukiwania nie może być pusty");
 });
 
 export default router;
