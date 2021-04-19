@@ -1,3 +1,4 @@
 request.http
 node_modules/
 config/default.json
+../.vscode/
