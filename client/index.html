@@ -19,25 +19,35 @@
     <div class="layer"></div>
     <div class="loading visible"><img src="./loading.gif" /></div>
     <header>
-      <div class="search">
-        <form class="search-form">
-          <input type="search" id="search-bar" />
-          <button type="submit" class="btn" id="search">Szukaj</button>
-        </form>
-      </div>
       <button class="btn library">
         Ulubione <i class="fab fa-itunes-note"></i>
       </button>
+      <button class="btn main" style="display: none">
+        Strona główna <i class="fab fa-itunes-note"></i>
+      </button>
+      <div class="search">
+        <form class="search-form">
+          <input type="search" id="search-bar" />
+          <button type="submit" class="btn" id="search">
+            <i class="fas fa-search"></i>
+          </button>
+        </form>
+      </div>
       <button class="btn add">Dodaj <i class="fas fa-plus"></i></button>
       <button class="btn view">Widok <i class="fas fa-photo-video"></i></button>
     </header>
-    <div class="top-container visible">
-      <span>
-        Pomóż nam powiększać bibliotekę. Dodaj swoje ulubione piosenki
-      </span>
-      <button class="btn" id="accept">Dodaj</button>
-      <button class="btn" id="reject">Nie dziękuję</button>
+    <div class="top-container">
+      <div class="help">
+        <span>
+          Pomóż nam powiększać bibliotekę. Dodaj swoje ulubione piosenki
+        </span>
+        <button class="btn" id="accept">Dodaj</button>
+      </div>
+      <div class="scroll">
+        <img src="./scroll.svg" />
+      </div>
     </div>
+
     <form enctype="multipart/form-data" class="upload-form">
       <div class="close">&times;</div>
       <div class="input-wrapper">
@@ -124,5 +134,30 @@
     </div>
     <audio></audio>
     <div class="message"></div>
+
+    <form enctype="multipart/form-data" class="edit-form">
+      <div class="close">&times;</div>
+      <div class="input-wrapper text-input">
+        <small>Artysta</small>
+        <input type="text" id="edit-artist" />
+      </div>
+      <div class="input-wrapper text-input">
+        <small>Tytuł</small>
+        <input type="text" id="edit-title" />
+      </div>
+      <div class="input-wrapper">
+        <div>
+          <small>Okładka</small>
+          <small>Zaznacz aby podać link do obrazka</small>
+          <input type="checkbox" id="edit-check" />
+        </div>
+        <input type="text" id="edit-cover" style="display: none" />
+        <label class="upload-file" id="edit-image-label">
+          <p>Załącz plik lub upuść tutaj</p>
+          <input type="file" accept="image/*" id="edit-image-input" />
+        </label>
+      </div>
+      <button class="btn" id="edit">Prześlij</button>
+    </form>
   </body>
 </html>

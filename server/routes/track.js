@@ -3,9 +3,16 @@ import Track from "../models/Track.js";
 
 const router = express.Router();
 
-router.get("/latest", async (req, res) => {
+router.post("/latest", async (req, res) => {
   try {
+    const { songs } = req.body;
     let tracks = await Track.find().select("-src").sort({ date: -1 });
+    if (songs.length > 0) {
+      songs.forEach((song) => {
+        tracks = tracks.filter((track) => track.id !== song);
+      });
+    }
+
     tracks = tracks.slice(0, 30);
     const response = {
       tracks,
@@ -55,21 +62,45 @@ router.post("/track", async (req, res) => {
   }
 });
 
-router.get("/search/:query", async (req, res) => {
-  const query = req.params.query;
-  if (query !== "undefined") {
-    const result = await Track.find({
-      $or: [
-        { artist: { $regex: query, $options: "i" } },
-        { name: { $regex: query, $options: "i" } },
-      ],
-    })
-      .select("-src")
-      .select("-type");
-    res.json(result);
-    return;
+router.post("/search/:query", async (req, res) => {
+  try {
+    const query = req.params.query;
+    const { songs } = req.body;
+    if (query !== undefined || query !== "") {
+      let tracks = await Track.find({
+        $or: [
+          { artist: { $regex: query, $options: "i" } },
+          { name: { $regex: query, $options: "i" } },
+        ],
+      }).select("-src");
+      if (songs.length > 0) {
+        songs.forEach((song) => {
+          tracks = tracks.filter((track) => track.id !== song);
+        });
+      }
+
+      res.json(tracks);
+      return;
+    }
+    res.status(401).json("Tekst wyszukiwania nie może być pusty");
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json("Błąd serwera");
   }
-  res.status(401).json("Tekst wyszukiwania nie może być pusty");
+});
+
+router.post("/edit", async (req, res) => {
+  try {
+    const { name, cover, id, artist } = req.body;
+    await Track.findByIdAndUpdate(
+      { _id: id },
+      { name: name, cover: cover, artist: artist }
+    );
+    res.json("Utwór został pomyślnie zmieniony");
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json("Błąd serwera");
+  }
 });
 
 export default router;
