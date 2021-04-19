@@ -215,6 +215,7 @@ libraryButton.addEventListener("click", async function () {
 
 mainButton.addEventListener("click", function () {
   this.classList.toggle("active");
+  container.classList.toggle("active");
   mainOpen = !mainOpen;
   if (libOpen) {
     libraryContainer.style.zIndex = 6;
@@ -548,7 +549,6 @@ submitButton.addEventListener("click", async function (event) {
 
 //Functions
 
-//NOTE: jest
 async function fetchEditedTrack(file) {
   const data = await fetch(
     "https://fathomless-escarpment-84181.herokuapp.com/edit",
@@ -564,7 +564,6 @@ async function fetchEditedTrack(file) {
   await getLatest();
 }
 
-//NOTE: jest
 //Send new track to database
 async function fetchNewTrack(file) {
   const data = await fetch(
@@ -581,7 +580,6 @@ async function fetchNewTrack(file) {
   await getLatest();
 }
 
-//NOTE: jest
 //Get latest tracks
 async function getLatest() {
   removeAllChildNodes(container);
@@ -618,7 +616,6 @@ async function getLatest() {
   latest.style.display = "none";
 }
 
-//NOTE: jest
 //Create music items
 function createTrackItem(track, playlist) {
   const trackItem = createElement("div", container, "track-item");
@@ -650,7 +647,6 @@ function createTrackItem(track, playlist) {
   trackTitle.innerText = track.name;
 }
 
-//NOTE: jest
 function createElement(DOMElement, parentElement, className) {
   const element = document.createElement(DOMElement);
   if (className !== undefined) {
@@ -664,7 +660,6 @@ function createElement(DOMElement, parentElement, className) {
   return element;
 }
 
-//NOTE: jest
 //Set player Info
 async function setPlayer(item, index) {
   itemIndex = index;
@@ -697,7 +692,6 @@ async function setPlayer(item, index) {
   await playTrack(item.id);
 }
 
-//NOTE: jest
 //Get src and play track
 async function playTrack(id) {
   const pause = playButtons.children[0];
@@ -729,12 +723,10 @@ async function playTrack(id) {
   audio.play();
 }
 
-//NOTE: jest
 function getTime(time) {
   return Math.floor(time / 60) + ":" + ("0" + Math.floor(time % 60)).slice(-2);
 }
 
-//NOTE: jest
 function showMessage(message) {
   messageContainer.innerText = message;
   messageContainer.classList.add("visible");
@@ -746,14 +738,12 @@ function showMessage(message) {
   }, 2000);
 }
 
-//NOTE: jest
 function removeAllChildNodes(parent) {
   while (parent.firstChild) {
     parent.removeChild(parent.firstChild);
   }
 }
 
-//NOTE: jest
 function readFile(file) {
   return new Promise((resolve, reject) => {
     let reader = new FileReader();
@@ -766,7 +756,6 @@ function readFile(file) {
   });
 }
 
-//NOTE: jest
 function playButton(isPlaying, item) {
   const play = item.children[1];
   const pause = item.children[0];
@@ -781,7 +770,6 @@ function playButton(isPlaying, item) {
   }
 }
 
-//NOTE: jest
 // function search
 async function searchTrack(query) {
   removeAllChildNodes(container);
@@ -818,7 +806,6 @@ async function searchTrack(query) {
   latest.style.display = "flex";
 }
 
-//NOTE: jest
 function createLibrary(library) {
   if (library !== undefined || library.length !== 0) {
     library.forEach((song, index) => {
@@ -847,7 +834,6 @@ function createLibrary(library) {
   }
 }
 
-//NOTE: jest
 function getPlaylist() {
   if (localStorage.getItem("playlist") !== null) {
     playlist = JSON.parse(localStorage.getItem("playlist"));
@@ -859,7 +845,6 @@ function getPlaylist() {
   return playlist;
 }
 
-//NOTE: jest
 function addToLibraryHandler() {
   addToLibraryButtons = document.querySelectorAll(".add-library");
   addToLibraryButtons.forEach((button) => {

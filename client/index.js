@@ -82,8 +82,9 @@ let isPlaying = false,
   deleteButtons,
   addToLibraryButtons,
   start = 0,
-  tracjItems,
-  libraryItems;
+  trackItems,
+  libraryItems,
+  items;
 
 const allDay = 1000 * 60 * 60 * 24;
 
@@ -209,8 +210,8 @@ libraryButton.addEventListener("click", async function () {
       !this.classList.contains("slide") &&
       !mainButton.classList.contains("slide")
     ) {
-      this.classLIst.add("slide");
-      mainButton.classLIst.add("slide");
+      this.classList.add("slide");
+      mainButton.classList.add("slide");
     }
 
     if (!libOpen && !mainOpen) {
@@ -222,6 +223,7 @@ libraryButton.addEventListener("click", async function () {
 
 mainButton.addEventListener("click", function () {
   this.classList.toggle("active");
+  container.classList.toggle("active");
   mainOpen = !mainOpen;
 
   if (libOpen) {
@@ -301,11 +303,10 @@ controlButtons.forEach((button) => {
   button.addEventListener("click", (event) => {
     switch (event.target.id) {
       case "step-backward":
-        let items;
         if (libraryContainer.classList.contains("active")) {
-          items = libraryItems;
+          items = libraryContainer.querySelectorAll(".track-item");
         } else {
-          items = trackItems;
+          items = container.querySelectorAll(".track-item");
         }
         itemIndex = (itemIndex - 1) % items.length;
         if (itemIndex < 0) {
@@ -335,15 +336,15 @@ controlButtons.forEach((button) => {
       case "step-forward":
         // let items;
         if (libraryContainer.classList.contains("active")) {
-          items = libraryItems;
+          items = libraryContainer.querySelectorAll(".track-item");
         } else {
-          items = trackItems;
+          items = container.querySelectorAll(".track-item");
         }
         itemIndex = (itemIndex + 1) % items.length;
         setPlayer(items[itemIndex], itemIndex);
         break;
       case "repeat":
-        event.target.classList.toggle("active");
+        event.target.classList.toggle("loop");
         isLooped = !isLooped;
         break;
     }
@@ -361,9 +362,9 @@ audio.addEventListener("ended", () => {
   playButton(isPlaying);
   let items;
   if (libraryContainer.classList.contains("active")) {
-    items = libraryItems;
+    items = libraryContainer.querySelectorAll(".track-item");
   } else {
-    items = trackItems;
+    items = container.querySelectorAll(".track-item");
   }
   itemIndex = (itemIndex + 1) % items.length;
   currentTime.innerText = "0:00";
@@ -700,7 +701,7 @@ function createTrackItem(track, playlist) {
 
   const editIcon = createElement("button", trackItem, "icon");
   editIcon.classList.add("edit");
-  editIcon.innerHTML = '<i clas="fas fa-pencil-alt"></i>';
+  editIcon.innerHTML = '<i class="fas fa-pencil-alt"></i>';
 
   const imgCover = createElement("img", trackItem);
   imgCover.src = track.cover;
@@ -720,7 +721,7 @@ function createTrackItem(track, playlist) {
 // create Library items
 function createLibrary(library) {
   if (library !== undefined || library.length !== 0) {
-    library.map((track) => {
+    library.forEach((track) => {
       const trackItem = createElement("div", libraryContainer, "track-item");
       trackItem.setAttribute("id", track.id);
 
@@ -741,6 +742,11 @@ function createLibrary(library) {
 
       const trackTitle = createElement("p", trackInfo);
       trackTitle.innerText = track.title;
+      trackItem.addEventListener("click", function (event) {
+        if (!event.target.classList.contains("remove")) {
+          setPlayer(trackItem, index);
+        }
+      });
     });
   } else {
     removeAllChilds(libraryContainer);
@@ -811,7 +817,7 @@ async function playTrack(id) {
   pause.style.zIndex = 2;
   play.style.zIndex = 1;
 
-  audio.ontimeupdate = async () => {
+  audio.addEventListener("timeupdate", async () => {
     let percentage = Math.floor((audio.currentTime / audio.duration) * 100);
 
     trackAnim.style.transform = `translateX(${-100 + percentage}%)`;
@@ -820,7 +826,8 @@ async function playTrack(id) {
     endTime.innerText = await getTime(audio.duration);
     trackTimeInput.max = audio.duration;
     trackTimeInput.value = audio.currentTime;
-  };
+  });
+  audio.play();
 }
 
 function readFile(file) {
@@ -850,11 +857,13 @@ function playButton(isPlaying) {
 function addToLibraryHandler() {
   addToLibraryButtons = document.querySelectorAll(".add-library");
   addToLibraryButtons.forEach((button) => {
-    button.onclick = function () {
+    button.addEventListener("click", function () {
       deleteButtons = document.querySelectorAll(".remove");
       const { children } = this.parentElement;
       let playlist = [];
-      playlist = getPlaylist();
+      if (localStorage.getItem("playlist") !== null) {
+        playlist = JSON.parse(localStorage.getItem("playlist"));
+      }
 
       let cover = children[2].src;
       let artist = children[3].children[0].innerText;
@@ -877,36 +886,34 @@ function addToLibraryHandler() {
       }
       getLatest();
       return;
-    };
+    });
 
     if (onlyDesktop) {
-      button.onmouseover = function () {
+      button.addEventListener("mouseover", function () {
         this.children[1].classList.add("visible");
-      };
-      button.onmouseleave = function () {
+      });
+      button.addEventListener("mouseleave", function () {
         this.children[1].classList.remove("visible");
-      };
+      });
     }
   });
 }
 
 function removeFromLibraryHandler() {
-  deleteButtons = document.querySelectorAll(".remove");
+  deleteButtons = libraryContainer.querySelectorAll(".remove");
   deleteButtons.forEach((button) => {
-    button.onclick = function () {
-      let playlist = getPlaylist();
-      playlist = playlist.filter((track) => track.id !== this.parentElement.id);
+    button.addEventListener("click", function () {
+      let playlist = JSON.parse(localStorage.getItem("playlist"));
+      playlist = playlist.filter((item) => item.id !== this.parentElement.id);
       localStorage.setItem("playlist", JSON.stringify(playlist));
-
-      loadingPage.classList.add("visible");
       this.parentElement.remove();
-
+      loadingPage.classList.add("visible");
       if (query !== undefined) {
         searchTrack(query);
       } else {
         getLatest();
       }
-    };
+    });
   });
 }
 
@@ -914,7 +921,7 @@ function editButtonsHandler() {
   const editButtons = document.querySelectorAll(".edit");
 
   editButtons.forEach((button) => {
-    button.onclick = function () {
+    button.addEventListener("click", function () {
       const { id, children } = this.parentElement;
       editId = id;
       let cover = children[2].src;
@@ -925,7 +932,7 @@ function editButtonsHandler() {
       editImageLabel.style.display = "none";
       layer.classList.add("active");
       editForm.classList.add("visible");
-    };
+    });
   });
 }
 
@@ -936,17 +943,17 @@ function trackItemHandler() {
     : (items = container.querySelectorAll(".track-item"));
 
   items.forEach((item, index) => {
-    item.onclick = function () {
-      if (libOpen && !this.classList.contains("icon")) {
+    item.addEventListener("click", (event) => {
+      if (libOpen && !event.target.classList.contains("icon")) {
         mainButton.style.display = "flex";
         libraryButton.classList.add("slide");
         mainButton.classList.add("slide");
       }
-      if (!this.classList.contains("icon")) {
+      if (!event.target.classList.contains("icon")) {
         setPlayer(item, index);
         detectPlayer();
       }
-    };
+    });
   });
 }
 
