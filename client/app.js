@@ -1,4 +1,4 @@
-const onlyDesktop = window.matchMedia("(min-width: 900px)").matches;
+const onlyDesktop = window.matchMedia("(min-width: 1300px)").matches;
 
 //header DOM Elements
 const libraryButton = document.querySelector(".library");
