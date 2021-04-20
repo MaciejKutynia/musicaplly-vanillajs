@@ -869,15 +869,6 @@ input[type="text"] {
   }
 }
 
-@media (min-width: 1400px) {
-  .help {
-    top: 42%;
-  }
-  .main-page-img {
-    top: -20%;
-  }
-}
-
 @media (min-width: 1100px) {
   #logo {
     top: -8%;
@@ -937,6 +928,15 @@ input[type="text"] {
     position: absolute;
     top: 9%;
     left: 0;
+  }
+}
+
+@media (min-width: 1400px) {
+  .help {
+    top: 42%;
+  }
+  .main-page-img {
+    top: -20%;
   }
 }
 
