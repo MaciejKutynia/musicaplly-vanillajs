@@ -13,18 +13,20 @@
     />
     <link rel="stylesheet" href="style.css" />
     <title>Musicaplly</title>
-    <script src="./index.js" defer></script>
+    <script src="./app.js" defer></script>
   </head>
   <body>
     <div class="layer"></div>
     <div class="loading visible"><img src="./loading.gif" /></div>
     <header>
-      <button class="btn library">
-        Ulubione <i class="fab fa-itunes-note"></i>
-      </button>
+      <button class="btn library">Ulubione <i class="fas fa-heart"></i></button>
       <button class="btn main" style="display: none">
-        Strona główna <i class="fab fa-itunes-note"></i>
+        Playlista <i class="fab fa-itunes-note"></i>
       </button>
+      <button class="btn" id="latest">
+        Najnowsze <i class="fas fa-headphones-alt"></i>
+      </button>
+      <img src="./headphones.png" alt="logo" id="logo" />
       <div class="search">
         <form class="search-form">
           <input type="search" id="search-bar" />
@@ -43,8 +45,9 @@
         </span>
         <button class="btn" id="accept">Dodaj</button>
       </div>
+      <img src="./main_page.png" alt="main-page" class="main-page-img" />
       <div class="scroll">
-        <img src="./scroll.svg" />
+        <img src="./arrow.svg" />
       </div>
     </div>
 
@@ -82,7 +85,6 @@
     <div class="container">
       <div class="library-container"></div>
       <div class="tracks-container"></div>
-      <button class="btn" id="latest">Najnowsze</button>
     </div>
     <div class="player none">
       <div class="icon toggle">

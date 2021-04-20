@@ -147,24 +147,20 @@ searchButton.addEventListener("click", function (event) {
 });
 
 searchButton.addEventListener("mouseover", () => {
-  document.getElementById("search-bar").classList.add("active");
+  searchInput.classList.add("active");
 });
 
 searchButton.addEventListener("mouseleave", () => {
-  document.getElementById("search-bar").classList.remove("active");
+  searchInput.classList.remove("active");
 });
 
-document
-  .getElementById("search-bar")
-  .addEventListener("mouseleave", function () {
-    this.classList.remove("active");
-  });
+searchInput.addEventListener("mouseleave", function () {
+  this.classList.remove("active");
+});
 
-document
-  .getElementById("search-bar")
-  .addEventListener("mouseover", function () {
-    this.classList.add("active");
-  });
+searchInput.addEventListener("mouseover", function () {
+  this.classList.add("active");
+});
 
 //Header event listeners
 addButton.addEventListener("click", () => {
@@ -196,17 +192,6 @@ libraryButton.addEventListener("click", async function () {
       container.style.zIndex = 7;
       libraryContainer.style.zIndex = 6;
     }
-    if (
-      !this.classList.contains("slide") &&
-      !mainButton.classList.contains("slide")
-    ) {
-      this.classList.add("slide");
-      mainButton.classList.add("slide");
-    }
-    if (!mainOpen && !libOpen) {
-      this.classList.remove("slide");
-      mainButton.classList.remove("slide");
-    }
   }
 
   this.classList.toggle("active");
@@ -216,6 +201,7 @@ libraryButton.addEventListener("click", async function () {
 mainButton.addEventListener("click", function () {
   this.classList.toggle("active");
   container.classList.toggle("active");
+
   mainOpen = !mainOpen;
   if (libOpen) {
     libraryContainer.style.zIndex = 6;
@@ -224,18 +210,6 @@ mainButton.addEventListener("click", function () {
     container.style.zIndex = 6;
     libraryContainer.style.zIndex = 7;
   }
-  container.classList.toggle("active");
-  if (
-    !this.classList.contains("slide") &&
-    !libraryButton.classList.contains("slide")
-  ) {
-    libraryButton.classList.add("slide");
-    this.classList.add("slide");
-  }
-  if (!mainOpen && !libOpen) {
-    libraryButton.classList.remove("slide");
-    this.classList.remove("slide");
-  }
 });
 
 //Top container event listeners
@@ -243,22 +217,6 @@ acceptButton.addEventListener("click", () => {
   topContainer.style.top = "100%";
   uploadForm.classList.add("visible");
   layer.classList.add("active");
-});
-
-scrollContainer.addEventListener("mouseover", function () {
-  this.style.opacity = 0;
-  this.addEventListener("transitionend", () => {
-    scrollIcon.src = "./arrow.svg";
-    this.style.opacity = 1;
-  });
-});
-
-scrollContainer.addEventListener("mouseleave", function () {
-  this.style.opacity = 0;
-  this.addEventListener("transitionend", () => {
-    scrollIcon.src = "./scroll.svg";
-    this.style.opacity = 1;
-  });
 });
 
 scrollContainer.addEventListener("click", () => {
@@ -273,18 +231,6 @@ playerImage.addEventListener("click", function () {
     player.classList.remove("hidden");
   }
   detectPlayer();
-  if (
-    (libraryContainer.classList.contains("active") &&
-      player.classList.length === 1) ||
-    (container.classList.contains("active") && player.classList.length === 1)
-  ) {
-    mainButton.classList.add("slide");
-    libraryButton.classList.add("slide");
-  }
-  if (player.classList.length !== 1) {
-    mainButton.classList.remove("slide");
-    libraryButton.classList.remove("slide");
-  }
 });
 
 controlButtons.forEach((button) => {
@@ -369,17 +315,6 @@ toggleButton.addEventListener("click", function () {
     ? (this.style.display = "none")
     : (this.style.display = "flex");
   detectPlayer();
-  if (
-    libraryContainer.classList.contains("active") &&
-    player.classList.length === 1
-  ) {
-    mainButton.classList.add("slide");
-    libraryButton.classList.add("slide");
-  }
-  if (player.classList.length !== 1) {
-    mainButton.classList.remove("slide");
-    libraryButton.classList.remove("slide");
-  }
 });
 
 volumeButton.addEventListener("mouseover", () => {
@@ -614,6 +549,7 @@ async function getLatest() {
   await editButtonsHandler();
   loading.classList.remove("visible");
   latest.style.display = "none";
+  document.querySelector(".help").classList.add("visible");
 }
 
 //Create music items
@@ -910,7 +846,6 @@ function removeFromLibraryHandler() {
       } else {
         getLatest();
       }
-      console.log(this.parentElement);
     });
   });
 }
@@ -943,11 +878,6 @@ function trackItemHandler() {
   }
   trackItems.forEach((item, index) => {
     item.addEventListener("click", (event) => {
-      if (libOpen && !event.target.classList.contains("icon")) {
-        libraryButton.classList.add("slide");
-        mainButton.style.display = "flex";
-        mainButton.classList.add("slide");
-      }
       if (!event.target.classList.contains("icon")) {
         setPlayer(item, index);
         detectPlayer();
