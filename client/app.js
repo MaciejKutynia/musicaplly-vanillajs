@@ -146,21 +146,23 @@ searchButton.addEventListener("click", function (event) {
   searchInput.value = "";
 });
 
-searchButton.addEventListener("mouseover", () => {
-  searchInput.classList.add("active");
-});
+if (onlyDesktop) {
+  searchButton.addEventListener("mouseover", () => {
+    searchInput.classList.add("active");
+  });
 
-searchButton.addEventListener("mouseleave", () => {
-  searchInput.classList.remove("active");
-});
+  searchButton.addEventListener("mouseleave", () => {
+    searchInput.classList.remove("active");
+  });
 
-searchInput.addEventListener("mouseleave", function () {
-  this.classList.remove("active");
-});
+  searchInput.addEventListener("mouseleave", function () {
+    this.classList.remove("active");
+  });
 
-searchInput.addEventListener("mouseover", function () {
-  this.classList.add("active");
-});
+  searchInput.addEventListener("mouseover", function () {
+    this.classList.add("active");
+  });
+}
 
 //Header event listeners
 addButton.addEventListener("click", () => {
