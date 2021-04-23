@@ -20,8 +20,8 @@ body {
   overflow: hidden;
   background: black;
   color: white;
-  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
-    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
+    'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
 .hovered {
@@ -109,8 +109,8 @@ input {
 #accept {
   color: white;
   border-color: #c500ff;
-  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
-    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
+    'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   text-transform: uppercase;
 }
 
@@ -211,8 +211,8 @@ header .btn {
   align-items: center;
   justify-content: space-between;
   transition: 0.3s ease;
-  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
-    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
+    'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
 #logo {
@@ -333,7 +333,7 @@ header .btn {
   position: absolute;
 }
 
-input[type="text"] {
+input[type='text'] {
   width: 70%;
   height: 3rem;
   background: transparent;
@@ -937,6 +937,11 @@ input[type="text"] {
   }
   .main-page-img {
     top: -20%;
+  }
+
+  #logo {
+    top: -6%;
+    width: 15%;
   }
 }
 
